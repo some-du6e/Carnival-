@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Carnival+",
+  "description": "better carnival.hackclub.com",
+  "version": "1.0.0",
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://carnival.hackclub.com/*"],
+      "js": ["content.js", "components/sidebar.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["storage"]
+}
