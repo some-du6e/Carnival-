@@ -9,5 +9,8 @@ function makeSidebarBetter() {
     }
 }
 
+window.addEventListener('pageChange', function() {
+    setTimeout(makeSidebarBetter, 100)
+});
 
 makeSidebarBetter()

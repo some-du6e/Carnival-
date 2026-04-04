@@ -11,6 +11,12 @@
       "matches": ["*://carnival.hackclub.com/*"],
       "js": ["content.js", "components/sidebar.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.carnival.hackclub.com/*"],
+      "js": ["components/utils.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
     }
   ],
   "permissions": ["storage"]
