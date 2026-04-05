@@ -39,7 +39,7 @@ body {
 }
 
 .side-by-side-fields {
-  display: inline-flex;
+  display: flex;
   gap: 12px;
   align-items: flex-start;
   flex-wrap: wrap;

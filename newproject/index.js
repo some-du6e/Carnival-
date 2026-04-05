@@ -182,7 +182,9 @@ let projectname = gei("project-name-input")
 let descrpition = gei("project-description-input")
 let editor = gei("project-editor-input")
 let hackatimeprojects = []
-let hackatimeprojectslist = gei("hackatime-projects")
+let hackatimeprojectos = gei("hackatime-projects")
+let projectcategory = gei("project-category-input:")
+let projecttags = gei("project-tags-input")
 
 window.carnivalRequest("https://carnival.hackclub.com/api/hackatime/projects?returnTo=%2Fprojects%3Fnew%3D1", {
   "headers": {
@@ -222,5 +224,11 @@ window.carnivalRequest("https://carnival.hackclub.com/api/hackatime/projects?ret
   console.error("Failed to fetch hackatime projects:", error)
 })
 
-
-// hackatime stuff
+// TODO write the logic for all the other ones not only for the project name
+projectname.addEventListener("input", function() {
+    if (uniquenessrationale.value.trim() === "" && notoriginalcheckbox.checked) {
+        next_button.disabled = true
+    }else {
+        next_button.disabled = false
+    }
+})
