@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carnival+ - New project</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" type="image/png" href="https://carnival.hackclub.com/favicon.png" />
+  </head>
+  </head>
+  <body>
+    <div id="app">
+        <div id="originality-declaration" class="section" hidden>
+
+          <h1 class="section-title">Originality Declaration</h1>
+          <div class="flex">
+            <input type="checkbox" id="originality-checkbox" class="checkbox" />
+            <p>Is your project original and not found in <a href="https://carnival.hackclub.com/explore" target="_blank">the explore page</a>?</p>
+          </div>
+          <div class="flex">
+            <input type="checkbox" id="not-original-checkbox" class="checkbox" />
+            <p>I found it in the explore page... (open overlap details and uniqueness rationale)</p>
+          </div>
+          <div id="originality-overlap-details" hidden>
+            <h3 class="section-subtitle">Overlap details</h3>
+            <!-- this has really confusing wording on the site so idk-->
+            <p>Overlap details (optional)</p>
+            <textarea id="overlap-details-textarea" class="textarea" placeholder="What existing project(s) similar?"></textarea>
+            <p>Uniqueness rationale</p>
+            <textarea id="uniqueness-rationale-textarea" class="textarea" placeholder="Why is your project unique?"></textarea>
+          </div>
+          </div>
+        
+        
+        <div id="info-section" class="section" hidden>
+
+          <h1 class="section-title mid-x">Info</h1>
+          <div class="lil-section">
+            <p class="mid-x">Project name: </p>
+            <input type="text" id="project-name-input" class="textinput" placeholder="My awesome project" />  
+          </div>
+          <div class="lil-section">
+            <p class="mid-x">Description: </p>
+            <textarea id="project-description-input" class="textinput" placeholder="A brief description of your project"></textarea>
+          </div>
+          <div class="side-by-side-fields">
+            <div class="lil-section ">
+              <p class="mid-x">Editor / app (optional)</p>
+              <input type="text" list="suggested-ides" id="project-editor-input" class="textinput"/>
+              <datalist id="suggested-ides">
+              <option>VS Code</option><option>Chrome</option><option>Firefox</option><option>Figma</option><option>Neovim</option><option>GNU Emacs</option><option>JupyterLab</option><option>Obsidian</option><option>Blender</option><option>FreeCAD</option><option>KiCad</option><option>Krita</option><option>GIMP</option><option>Inkscape</option><option>Godot Engine</option><option>Unity</option>
+
+              </datalist>
+          </div>
+           <div class="lil-section ">
+              <p class="mid-x">Hackatime project (optional)</p>
+              <input type="text" list="hackatime-projects" id="hackatime-input" class="textinput"/>
+              <datalist id="hackatime-projects">
+                <option id="pls_remove">Should be updated or disable the extension and login to hackatime with carnival!</option>
+              </datalist>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+
+        <div id="bottom-right-corner">
+          <button id="next-button" class="button nav-button" disabled>Next</button>
+        </div>
+        <div id="bottom-left-corner">
+          <button id="back-button" class="button nav-button" >Back</button>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</html>

@@ -77,6 +77,7 @@ function betterProjects() {
     }
     console.log("Carnival+: total hours", totalHours)
     localStorage.setItem("hours", totalHours)
+    
 }
 
 window.addEventListener('pageChange', function() {

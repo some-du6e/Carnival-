@@ -26,5 +26,7 @@
       "world": "MAIN"
     }
   ],
-  "permissions": ["storage"]
+  "permissions": ["storage"],
+  "host_permissions": ["https://carnival.hackclub.com/*", "https://*.carnival.hackclub.com/*"],
+  "options_page": "newproject/index.html"
 }
