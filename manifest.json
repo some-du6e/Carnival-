@@ -14,7 +14,8 @@
         "components/sidebar.js",
         "components/topbar.js",
         "components/consts.js",
-        "components/projects.js"
+        "components/projects.js",
+        "components/qol.js"
       ],
       "run_at": "document_idle"
     },

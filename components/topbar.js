@@ -88,7 +88,8 @@ function betterTopbar() {
         }
         for (let sigma of order) {
             let divv = document.createElement(sigma === usdreal || sigma === predictedUSD ? "a" : "div")
-            divv.className = "topbar-pill inline-flex items-center gap-2 px-4 py-2 border border-border bg-[#f8fafc] border-[1.5px] border-solid border-[#e2e8f0] rounded-[20px] text-[13px] font-semibold text-[#0f172a] tabular-nums transition-all duration-200 ease-out bg-carnival-blue/15 rounded-full"
+            // V half of these classes can probably be deleted
+            divv.className = "topbar-pill inline-flex items-center gap-2 px-4 py-1 border border-border bg-[#f8fafc] border-[1.5px] border-solid border-[#e2e8f0] rounded-[20px] text-[13px] font-semibold text-[#0f172a] tabular-nums transition-all duration-200 ease-out bg-carnival-blue/15 rounded-full"
             if (sigma === usdreal || sigma === predictedUSD) {
                 divv.href = "javascript:void(0)"
                 divv.onclick  = function() {
