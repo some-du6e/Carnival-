@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["*://carnival.hackclub.com/*"],
-      "js": ["content.js", "components/sidebar.js", "components/topbar.js"],
+      "js": ["content.js", "components/sidebar.js", "components/topbar.js", "components/consts.js"],
       "run_at": "document_idle"
     },
     {

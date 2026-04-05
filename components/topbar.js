@@ -1,4 +1,7 @@
 function betterTopbar() {
+    ///////////////////////////////////////////////////////////////////////////////
+    // get rid of name and arrow in topbar cuz they stinky and we dont need them //
+    ///////////////////////////////////////////////////////////////////////////////
     // pfp
     let kindapfpthing = document.getElementsByClassName("h-9 w-9 rounded-full bg-carnival-blue/15 border border-border flex items-center justify-center text-foreground font-bold")[0]
     if (!kindapfpthing) {
@@ -32,6 +35,15 @@ function betterTopbar() {
     // now we have all the elements we need, let's get rid of them
     name.style.display = "none"
     arrow.style.display = "none"
+
+
+
+    /////////////////////////////////////////////////////
+    // 
+
+    let tokens = document.getElementsByClassName("bg-carnival-blue/15 border border-border text-foreground px-4 py-2 rounded-full font-semibold inline-flex items-center gap-2")[0].children[0].textContent.replace("🪙 ", "") // ! really hardcoded
+    let usdreal = parseInt(tokens, 10) * onetoken2usd
+    let hours = localStorage.getItem("hours") || 0
 }
 
 function waitForSessionCheck() {
