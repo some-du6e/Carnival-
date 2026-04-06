@@ -97,7 +97,35 @@ let submitsection = gei("submit-section")
 // selectionj and nex button
 let sectionon = originalitysection
 let flow = [originalitysection, infosection, demosection, screenshotsection, submitsection]
-let sections = dc.getElementsByClassName("section") 
+let sections = dc.getElementsByClassName("section")
+
+// DEBUG AUTOFILL
+window.debugautofill = function() {
+    // Fill all fields first
+    gei("originality-checkbox").checked = true
+    gei("overlap-details-textarea").value = "Test overlap details"
+    gei("uniqueness-rationale-textarea").value = "Test uniqueness rationale"
+    gei("project-name-input").value = "My Awesome Project"
+    gei("project-description-input").value = "This is a test project description for debugging purposes."
+    gei("project-editor-input").value = "VS Code"
+    gei("hackatime-input").value = ""
+    gei("project-category-input").value = "Web"
+    gei("project-tags-input").value = "test, debug, carnival"
+    gei("demo-vid-link-input").value = "https://youtube.com/watch?v=test"
+    gei("playable-demo-link-input").value = "https://example.com/demo"
+    gei("github-link-input").value = "https://github.com/test/project"
+
+    // Navigate to demosection so renderSectionthing enables next_button
+    sectionon = demosection
+    renderSectionthing()
+
+    // Force enable both buttons (bypass section logic)
+    next_button.hidden = false
+    next_button.disabled = false
+    back_button.hidden = false
+    back_button.disabled = false
+}
+ 
 function renderSectionthing() {
     if (sectionon === flow[0]) {
         back_button.hidden = true
@@ -278,21 +306,40 @@ if (autofillLink) {
 
 // screenshots
 // todo: do not make it a text area and make it a proper uploader
-let screenshots = []
+let screenshots = [
+    "https://placehold.co/600x400?text=Screenshot-1",
+    "https://placehold.co/600x400?text=Screenshot-2",
+    "https://placehold.co/600x400?text=Screenshot-3"
+]
 let screenshotstextarea = gei("screenshot-links-input")
 screenshotstextarea.addEventListener("input", function() {
+    screenshots = []
     screenshotstextarea.value.split(/\r?\n/).forEach((line, index) => {
-        screenshots[index] = line.trim()
+        if (line.trim() !== "") {
+            screenshots.push(line.trim())
+        }
     })
+    if (screenshots.length < 3) {
+        // console.log("bud didnt add 3 screenshots, adding placeholders")
+        while (screenshots.length < 3) {
+            screenshots.push("https://placehold.co/600x400?text=Screenshot-" + (screenshots.length + 1))
+        }
+    }
+    // console.log("Updated screenshots array:", screenshots)
 })
+
 
 // submit
 let submitbutton = gei("submit-button")
 submitbutton.addEventListener("click", function() {
+
+
+
+
     let submission = {
         "name":projectname.value, 
         "description":descrpition.value, 
-        "editor":editor.value, 
+        "editor":"other", // TODO: get official values cuz this is hella hacky 
         "editorOther":editor.value, 
         "category":projectcategory.value, 
         "tags":projecttags.value,
@@ -303,11 +350,38 @@ submitbutton.addEventListener("click", function() {
         "videoUrl":demovidurlinput.value, 
         "playableDemoUrl":demoplayableurlinput.value, 
         "codeUrl":githuburlinput.value, 
-        "screenshots":["demo.com", "demo.com", "demo.com"], 
+        "screenshots": screenshots, 
         "creatorDeclaredOriginality":gei("originality-checkbox").checked, 
         "creatorDuplicateExplanation": !gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("overlap-details-textarea").value : "", 
         "creatorOriginalityRationale":!gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("uniqueness-rationale-textarea").value : ""
     }
 
     console.log("Final submission object:", submission)
+    const choice = confirm("Are you sure? Check the console for what is going to be sent.")
+    if (choice) {
+        window.carnivalRequest("https://carnival.hackclub.com/api/projects", {
+          "headers": {
+            "accept": "*/*",
+            "accept-language": "en-US,en;q=0.9,es;q=0.8",
+            "content-type": "application/json",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin"
+          },
+          "referrer": "https://carnival.hackclub.com/projects?new=1",
+          "body": JSON.stringify(submission),
+          "method": "POST",
+          "mode": "cors",
+          "credentials": "include" 
+        }).then(response => {
+            console.log("Submission successful:", response)
+            alert("Project submitted successfully!")
+        })
+    }else {
+        alert("alright")
+    }
 })
