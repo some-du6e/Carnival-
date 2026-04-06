@@ -1,5 +1,5 @@
 function betterProjects() {
-    if (window.location.pathname !== "/projects") return;
+    if (window.location.pathname !== "/projects") {console.log("Carnival+: not on projects page..."); return};
     console.log("Carnival+: betterProjects ran") // TODO: remove this log
 
     let projects = {
@@ -78,10 +78,29 @@ function betterProjects() {
     console.log("Carnival+: total hours", totalHours)
     localStorage.setItem("hours", totalHours)
     
+
+    // change the add project button to our own...
+    /// i dont think there are several but just in case
+    let possibleaddprojectbuttons = document.getElementsByClassName("fixed bottom-6 right-6 h-14 w-14 rounded-full bg-carnival-red hover:bg-carnival-red/80 text-white flex items-center justify-center shadow-xl border border-border carnival-glow transition-all hover:scale-105")
+
+    console.log("Carnival+: location.origin:", location.origin)
+    for (let possibleaddprojectbutton of possibleaddprojectbuttons) {
+        // change it fr now
+        possibleaddprojectbutton.href = chrome.runtime.getURL("newproject/index.html")
+        // change the onclick thing too
+        possibleaddprojectbutton.onclick = function(e) {
+            e.preventDefault() // prevent the default action of the link
+            // open a new tab
+            window.open(chrome.runtime.getURL("newproject/index.html"), "_blank")
+        }
+        console.log("possible add button: ",possibleaddprojectbutton)
+    }
+
 }
 
 window.addEventListener('pageChange', function() {
-    setTimeout(betterProjects, 300);
+    setTimeout(betterProjects, 1000);
 });
 
-betterProjects()
+
+setTimeout(betterProjects, 1000);
