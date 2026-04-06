@@ -109,10 +109,11 @@ let back_button = gei("back-button")
 // sections
 let originalitysection = gei("originality-declaration")
 let infosection = gei("info-section")
+let demosection = gei("demo-section")
 
 // selectionj and nex button
-let sectionon = infosection
-let flow = [originalitysection, infosection]
+let sectionon = originalitysection
+let flow = [originalitysection, infosection, demosection]
 let sections = dc.getElementsByClassName("section") 
 function renderSectionthing() {
     if (sectionon === flow[0]) {
@@ -127,7 +128,13 @@ function renderSectionthing() {
         }     else {
             section.hidden = true
         }
-}}
+}
+if (sectionon === demosection) {
+    next_button.disabled = false // demo section is optional    
+}else {
+    next_button.disabled = true // the section should enable it themself...
+}
+}
 
 renderSectionthing()
 next_button.addEventListener("click", function() {
@@ -232,3 +239,28 @@ projectname.addEventListener("input", function() {
         next_button.disabled = false
     }
 })
+
+// demo section
+let demovidurlinput = gei("demo-vid-link-input")
+let demoplayableurlinput = gei("playable-demo-link-input")
+let githuburlinput = gei("github-link-input")
+
+function autofillDemoLink() {
+    if (!githuburlinput.value.startsWith("https://github.com/") || !githuburlinput.value.startsWith("http://github.com/") || !githuburlinput.value.trim() === "") { alert("Thats not a github url bud"); return}
+    let ghurl = githuburlinput.value.trim()
+    if (ghurl.endsWith("/")) {ghurl = ghurl.slice(0, -1)}
+    let releaseurl = ghurl + "/releases/latest"
+    if (confirm("Do you want to autofill the playable demo link with the latest release from your github?")) {
+        demoplayableurlinput.value = releaseurl
+    }else {
+        alert("ok bud")
+    }
+}
+
+let autofillLink = gei("autofill-demo-link")
+if (autofillLink) {
+    autofillLink.addEventListener("click", function(e) {
+        e.preventDefault()
+        autofillDemoLink()
+    })
+}       
