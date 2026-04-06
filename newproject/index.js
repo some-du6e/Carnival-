@@ -84,25 +84,7 @@ function carnivalRequest(pathOrUrl, options = {}) {
 window.carnivalRequest = carnivalRequest
 ///////////////////////////////////////////////////////////////////
 // slop end //
-let submission = {
-    "name":"project namee", 
-    "description":"descriptionnn", 
-    "editor":"other", 
-    "editorOther":"editor", 
-    "category":"category", 
-    "tags":"tags",
-    "hackatimeProjectName":"", 
-    "hackatimeStartedAt":null, 
-    "hackatimeStoppedAt":null, 
-    "hackatimeTotalSeconds":null, 
-    "videoUrl":"vid.com", 
-    "playableDemoUrl":"demo.com", 
-    "codeUrl":"gh.com", 
-    "screenshots":["demo.com", "demo.com", "demo.com"], 
-    "creatorDeclaredOriginality":gei("originality-checkbox").checked, 
-    "creatorDuplicateExplanation": !gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("overlap-details-textarea").value : "", 
-    "creatorOriginalityRationale":!gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("uniqueness-rationale-textarea").value : ""
-}
+
 // extra
 let next_button = gei("next-button")
 let back_button = gei("back-button")
@@ -110,10 +92,11 @@ let back_button = gei("back-button")
 let originalitysection = gei("originality-declaration")
 let infosection = gei("info-section")
 let demosection = gei("demo-section")
-
+let screenshotsection = gei("screenshot-section")
+let submitsection = gei("submit-section")
 // selectionj and nex button
 let sectionon = originalitysection
-let flow = [originalitysection, infosection, demosection]
+let flow = [originalitysection, infosection, demosection, screenshotsection, submitsection]
 let sections = dc.getElementsByClassName("section") 
 function renderSectionthing() {
     if (sectionon === flow[0]) {
@@ -129,7 +112,12 @@ function renderSectionthing() {
             section.hidden = true
         }
 }
-if (sectionon === demosection) {
+if (sectionon === submitsection) {
+    next_button.hidden = true   
+}else {
+    next_button.hidden = false
+}
+if (sectionon === demosection || sectionon === screenshotsection) {
     next_button.disabled = false // demo section is optional    
 }else {
     next_button.disabled = true // the section should enable it themself...
@@ -189,8 +177,10 @@ let projectname = gei("project-name-input")
 let descrpition = gei("project-description-input")
 let editor = gei("project-editor-input")
 let hackatimeprojects = []
+let hackatimeprojectsmap = {} // maps project names to their full data
+let hackatimeinput = gei("hackatime-input")
 let hackatimeprojectos = gei("hackatime-projects")
-let projectcategory = gei("project-category-input:")
+let projectcategory = gei("project-category-input")
 let projecttags = gei("project-tags-input")
 
 window.carnivalRequest("https://carnival.hackclub.com/api/hackatime/projects?returnTo=%2Fprojects%3Fnew%3D1", {
@@ -209,20 +199,27 @@ window.carnivalRequest("https://carnival.hackclub.com/api/hackatime/projects?ret
   try {
     const data = typeof response.body === 'string' ? JSON.parse(response.body) : response.body
         hackatimeprojects = Array.isArray(data) ? data : (Array.isArray(data.projects) ? data.projects : [])
-        hackatimeprojectslist.innerHTML = ""
+        hackatimeprojectos.innerHTML = ""
+        hackatimeprojectsmap = {} // reset the map
     
     if (hackatimeprojects.length > 0) {
       for (let project of hackatimeprojects) {
         let option = dc.createElement("option")
         option.value = project.name
         option.textContent = project.name
-        hackatimeprojectslist.appendChild(option)
+        hackatimeprojectos.appendChild(option)
+        // store the full project data in the map
+        hackatimeprojectsmap[project.name] = {
+          totalSeconds: project.totalSeconds,
+          startedAt: project.startedAt,
+          stoppedAt: project.stoppedAt
+        }
       }
         } else {
             let option = dc.createElement("option")
             option.value = ""
             option.textContent = "No Hackatime projects found"
-            hackatimeprojectslist.appendChild(option)
+            hackatimeprojectos.appendChild(option)
     }
   } catch (error) {
     console.error("Error parsing hackatime projects:", error)
@@ -237,6 +234,20 @@ projectname.addEventListener("input", function() {
         next_button.disabled = true
     }else {
         next_button.disabled = false
+    }
+})
+
+// track selected hackatime project data
+let selectedhackatimeproject = null
+hackatimeinput.addEventListener("input", function() {
+    const projectname = hackatimeinput.value.trim()
+    if (hackatimeprojectsmap[projectname]) {
+        selectedhackatimeproject = {
+            name: projectname,
+            ...hackatimeprojectsmap[projectname]
+        }
+    } else {
+        selectedhackatimeproject = null
     }
 })
 
@@ -264,3 +275,39 @@ if (autofillLink) {
         autofillDemoLink()
     })
 }       
+
+// screenshots
+// todo: do not make it a text area and make it a proper uploader
+let screenshots = []
+let screenshotstextarea = gei("screenshot-links-input")
+screenshotstextarea.addEventListener("input", function() {
+    screenshotstextarea.value.split(/\r?\n/).forEach((line, index) => {
+        screenshots[index] = line.trim()
+    })
+})
+
+// submit
+let submitbutton = gei("submit-button")
+submitbutton.addEventListener("click", function() {
+    let submission = {
+        "name":projectname.value, 
+        "description":descrpition.value, 
+        "editor":editor.value, 
+        "editorOther":editor.value, 
+        "category":projectcategory.value, 
+        "tags":projecttags.value,
+        "hackatimeProjectName": selectedhackatimeproject ? selectedhackatimeproject.name : "", 
+        "hackatimeStartedAt": selectedhackatimeproject ? selectedhackatimeproject.startedAt : null, 
+        "hackatimeStoppedAt": selectedhackatimeproject ? selectedhackatimeproject.stoppedAt : null, 
+        "hackatimeTotalSeconds": selectedhackatimeproject ? selectedhackatimeproject.totalSeconds : null, 
+        "videoUrl":demovidurlinput.value, 
+        "playableDemoUrl":demoplayableurlinput.value, 
+        "codeUrl":githuburlinput.value, 
+        "screenshots":["demo.com", "demo.com", "demo.com"], 
+        "creatorDeclaredOriginality":gei("originality-checkbox").checked, 
+        "creatorDuplicateExplanation": !gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("overlap-details-textarea").value : "", 
+        "creatorOriginalityRationale":!gei("originality-checkbox").checked && gei("not-original-checkbox").checked ? gei("uniqueness-rationale-textarea").value : ""
+    }
+
+    console.log("Final submission object:", submission)
+})
