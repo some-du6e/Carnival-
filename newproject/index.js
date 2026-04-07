@@ -332,9 +332,16 @@ screenshotstextarea.addEventListener("input", function() {
 // submit
 let submitbutton = gei("submit-button")
 submitbutton.addEventListener("click", function() {
-
-
-
+    // fill the demo links with placeholders if they are empty
+    if (demovidurlinput.value.trim() === "") {
+        demovidurlinput.value = "https://placehold.co/600x400?text=Demo+Video"
+    }
+    if (demoplayableurlinput.value.trim() === "") {
+        demoplayableurlinput.value = "https://placehold.co/600x400?text=Playable+Demo"
+    }
+    if (githuburlinput.value.trim() === "") {
+        githuburlinput.value = "https://placehold.co/600x400?text=GitHub+Repo"
+    }
 
     let submission = {
         "name":projectname.value, 
