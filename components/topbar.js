@@ -49,7 +49,7 @@ function betterTopbar() {
     // get le values
     let tokens = document.getElementsByClassName("bg-carnival-blue/15 border border-border text-foreground px-4 py-2 rounded-full font-semibold inline-flex items-center gap-2")[0].children[0].textContent.replace("🪙 ", "") // ! really hardcoded
     let usdreal = parseInt(tokens, 10) * onetoken2usd
-    let hours = localStorage.getItem("hours") || '...'
+    let hours = localStorage.getItem("hours") ? parseFloat(localStorage.getItem("hours")).toFixed(2) : '...'
     let predictedUSD = "wait"
     if (hours !== "...") {
         predictedUSD = (parseFloat(hours) * onehour2usd).toFixed(2)
@@ -77,6 +77,7 @@ function betterTopbar() {
     let order = {}
 
     function render() {
+
         if (localStorage.getItem("larpingUSD") === "true") {
             order = [hours, predictedUSD, tokens]
         }else {
