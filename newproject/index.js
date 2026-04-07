@@ -343,6 +343,20 @@ submitbutton.addEventListener("click", function() {
         githuburlinput.value = "https://placehold.co/600x400?text=GitHub+Repo"
     }
 
+    // fill some info stuff if its empty
+    if (descrpition.value.trim() === "") {
+        descrpition.value = "PLACEHOLDER"
+    }
+    if (editor.value.trim() === "") {
+        editor.value = "PLACEHOLDER"
+    }
+    if (projectcategory.value.trim() === "") {
+        projectcategory.value = "PLACEHOLDER"
+    }
+    if (projecttags.value.trim() === "") {
+        projecttags.value = "PLACEHOLDER"
+    }
+
     let submission = {
         "name":projectname.value, 
         "description":descrpition.value, 
