@@ -285,7 +285,7 @@ let demoplayableurlinput = gei("playable-demo-link-input")
 let githuburlinput = gei("github-link-input")
 
 function autofillDemoLink() {
-    if (!githuburlinput.value.startsWith("https://github.com/") || !githuburlinput.value.startsWith("http://github.com/") || !githuburlinput.value.trim() === "") { alert("Thats not a github url bud"); return}
+    if (!githuburlinput.value.startsWith("https://github.com/") && !githuburlinput.value.startsWith("http://github.com/") && githuburlinput.value.trim() !== "") { alert("Thats not a github url bud"); return}
     let ghurl = githuburlinput.value.trim()
     if (ghurl.endsWith("/")) {ghurl = ghurl.slice(0, -1)}
     let releaseurl = ghurl + "/releases/latest"
