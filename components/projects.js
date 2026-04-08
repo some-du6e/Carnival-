@@ -1,6 +1,6 @@
 function betterProjects() {
     if (window.location.pathname !== "/projects") {console.log("Carnival+: not on projects page..."); return};
-    console.log("Carnival+: betterProjects ran") // TODO: remove this log
+    // console.log("Carnival+: betterProjects ran")
 
     let projects = {
         // "072d665d-78fd-4ae3-b70d-3d302e652383": {
@@ -77,13 +77,32 @@ function betterProjects() {
     }
     console.log("Carnival+: total hours", totalHours)
     localStorage.setItem("hours", totalHours)
+
+    // check if the hours are different from the last time we checked, if they are then we update the badge
+    let hours = document.getElementById("carnival-topbar-pill-hours")
+    if (hours) {
+        let currentHours = localStorage.getItem("hours") ? parseFloat(localStorage.getItem("hours")).toFixed(2) : '...'
+        let oldHours = hours.children[1].textContent
+        // console.log("Carnival+: currentHours:", currentHours, "oldHours:", oldHours)
+        if (currentHours !== oldHours) {
+            console.log("Carnival+: hours changed, updating badge")
+            if (window.renderTopBar) {
+                console.log("Carnival+: renderTopBar function found, updating badge")
+                window.renderTopBar(true)
+            }else {
+                console.error("Carnival+: renderTopBar function not found, something has changed! ID:8sdf7g")
+            }
+        }
+    } else {
+        console.error("Carnival+: hours element not found, something has changed! ID:xEUG")
+    }
     
 
     // change the add project button to our own...
     /// i dont think there are several but just in case
     let possibleaddprojectbuttons = document.getElementsByClassName("fixed bottom-6 right-6 h-14 w-14 rounded-full bg-carnival-red hover:bg-carnival-red/80 text-white flex items-center justify-center shadow-xl border border-border carnival-glow transition-all hover:scale-105")
 
-    console.log("Carnival+: location.origin:", location.origin)
+    if (REALLYdebuging) {console.log("Carnival+: location.origin:", location.origin)}
     for (let possibleaddprojectbutton of possibleaddprojectbuttons) {
         // change it fr now
         possibleaddprojectbutton.href = chrome.runtime.getURL("newproject/index.html")

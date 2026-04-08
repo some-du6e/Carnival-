@@ -76,8 +76,21 @@ function betterTopbar() {
     // ^ stinky
     let order = {}
 
-    function render() {
+    window.renderTopBar = function(updatestuffpls = false) {
+        if (updatestuffpls) {
+            // update the values
+            console.log("Carnival+: updating topbar values...") 
+            tokens = document.getElementsByClassName("bg-carnival-blue/15 border border-border text-foreground px-4 py-2 rounded-full font-semibold inline-flex items-center gap-2")[0].children[0].textContent.replace("🪙 ", "") // ! really hardcoded
+            usdreal = parseInt(tokens, 10) * onetoken2usd
+            hours = localStorage.getItem("hours") ? parseFloat(localStorage.getItem("hours")).toFixed(2) : '...'
+            predictedUSD = "wait"
+            if (hours !== "...") {
+                predictedUSD = (parseFloat(hours) * onehour2usd).toFixed(2)
+            }else {
+                predictedUSD = "..."
+            }
 
+        }
         if (localStorage.getItem("larpingUSD") === "true") {
             order = [hours, predictedUSD, tokens]
         }else {
@@ -96,32 +109,40 @@ function betterTopbar() {
                 divv.onclick  = function() {
                     if (localStorage.getItem("larpingUSD") === "true") {
                         localStorage.setItem("larpingUSD", "false")
-                        render()
+                        window.renderTopBar()
                      }else {
                         localStorage.setItem("larpingUSD", "true")
-                        render()
+                        window.renderTopBar()
                      }
                 }
             }
-            let emoji = "🫠"
+            let varname = null
+            let emoji = "🍆"
             if (sigma === tokens) {
                 emoji = "🪙"
+                varname = "tokens"
             }else if (sigma === usdreal) {
                 emoji = "💵"
+                varname = "usdreal"
             }else if (sigma === hours) {
                 emoji = "⏱️"
+                varname = "hours"
             }else if (sigma === predictedUSD) {
                 emoji = "💸"
+                varname = "predictedUSD"
             }
+            if (emoji === "🍆") {console.error("Carnival+: emoji not changed? i have no clue how this happens ID:XIUeq")}
             divv.innerHTML = `
                 <span class="text-[14px] leading-none opacity-90">${emoji}</span>
                 <span class="text-[13px] font-bold text-[#0f172a] tabular-nums">${sigma}</span>
             `
+            
+            divv.id = "carnival-topbar-pill-" + varname
             sidethingwiththepfpandtokens.prepend(divv)
         }
         sidethingwiththepfpandtokens.classList.remove("sm:gap-6")
     }
-    render()
+    window.renderTopBar()
 }
 
 function waitForSessionCheck() {
@@ -137,5 +158,7 @@ function waitForSessionCheck() {
 window.addEventListener('pageChange', function() {
     setTimeout(waitForSessionCheck, 300);
 });
+
+
 
 waitForSessionCheck();
