@@ -95,6 +95,38 @@ function betterProjectPage() {
     console.log("Offenders:", offenders)
 
 
+
+    // inject/or idk how its called but make the button check
+    let possiblesubmitbuttons = document.getElementsByClassName("inline-flex items-center justify-center bg-carnival-blue hover:bg-carnival-blue/80 disabled:bg-carnival-blue/50 disabled:cursor-not-allowed text-white px-5 py-2.5 rounded-full font-bold transition-colors")
+    for (let button of possiblesubmitbuttons) {
+        if (button.tagName !== "BUTTON") {continue}
+        if (button.innerText !== "Submit for review") {continue}
+        button.addEventListener("click", function(event) {
+            let offenders = checkPlaceholders()
+
+            if (offenders.length === 0) {
+                console.log("Carnival+: no placeholders found, good to go!")
+                return
+            }else {
+                event.preventDefault()
+            }
+            
+            let wordinglist = ""
+            for (let offender of offenders) {
+                if (offenders[offenders.length - 1] === offender) {
+                    wordinglist += "and " + offender
+                } else {
+                    wordinglist += offender + ", "
+
+                }
+            }
+
+            alert("You have these still as a placeholder: " + wordinglist + "\nPlease fix them before submitting.")
+
+
+        })
+    }
+
 }
 
 window.addEventListener('pageChange', function() {
